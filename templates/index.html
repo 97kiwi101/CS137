@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MySQL Data</title>
+</head>
+<body>
+    <h1>Data from MySQL Table</h1>
+    <table border="1">
+        <thead>
+            {% if rows %}
+                <tr>
+                    {% for key in rows[0].keys() %}
+                        <th>{{ key }}</th>
+                    {% endfor %}
+                </tr>
+            {% endif %}
+        </thead>
+        <tbody>
+            {% for row in rows %}
+                <tr>
+                    {% for value in row.values() %}
+                        <td>{{ value }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
