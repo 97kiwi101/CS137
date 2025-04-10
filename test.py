@@ -1,8 +1,17 @@
-import mysql.connector
-from creds import db_config
+import pymysql
+import creds
+
+def get_conn():
+    conn = pymysql.connect(
+        host= creds.host,
+        user= creds.user,
+        password= creds.password,
+        db=creds.db,
+        )
+    cur = conn.cursor()
 
 try:
-    conn = mysql.connector.connect(**db_config)
-    print("Connected!")
+    get_conn()
+    print("IT FUCKING WORKS")
 except Exception as e:
     print("Failed to connect:", e)
