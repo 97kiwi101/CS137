@@ -10,8 +10,8 @@
         <ul>
         {% for user in users %}
             <li>
-                <strong>Username:</strong> {{ user.Username }}<br>
-                <strong>UserID:</strong> {{ user.UserID }}<br>
+                <strong>Username:</strong> {{ user.UserName }}<br>
+                <strong>UserID:</strong> {{ user.UserIDNum }}<br>
                 <strong>Poems:</strong>
                 <ul>
                     {% for poem in user.Poems %}
