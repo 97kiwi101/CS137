@@ -8,28 +8,48 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from matplotlib import table
 from botocore.exceptions import ClientError
 import boto3
-
-dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
-table = dynamodb.Table('UserAccountsPoems') 
+import pymysql
+import creds
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key' # this is an artifact for using flash displays; 
-                                   # it is required, but you can leave this alone
+
+def get_conn():
+    conn = pymysql.connect(
+        host=creds.host,
+        user=creds.user,
+        password=creds.password,
+        db=creds.db
+    )
+    return conn
+
+def execute_query(query, args=()):
+    conn = get_conn()
+    cur = conn.cursor()
+    cur.execute(query, args)
+    rows = cur.fetchall()
+    cur.close()
+    conn.close()
+    return rows
+
+def display_html(rows):
+    html = """
+    <html><body>
+    <h2>Poems Table</h2>
+    <table border="1" cellpadding="5">
+    <tr><th>PoemID</th><th>Title</th><th>Text</th><th>AuthorUserName</th></tr>
+    """
+    for r in rows:
+        html += f"<tr><td>{r[0]}</td><td>{r[1]}</td><td>{r[2]}</td><td>{r[3]}</td></tr>"
+    html += "</table></body></html>"
+    return html
 
 @app.route('/')
-def home():
+def index():
     try:
-        response = table.scan()
-        users_list = response.get('Items', [])
-    except ClientError as e:
-        flash(f"Error reading from DynamoDB: {e.response['Error']['Message']}", 'danger')
-        users_list = []
+        rows = execute_query("SELECT * FROM Poems")
+        return display_html(rows)
+    except Exception as e:
+        return f"<h3>Error: {e}</h3>"
 
-    return render_template('display_users.html', users=users_list)
-
-
-
-# these two lines of code should always be the last in the file
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080, debug=True)
-    
+    app.run(debug=True)
