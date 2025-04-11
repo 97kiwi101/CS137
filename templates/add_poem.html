@@ -1,0 +1,28 @@
+<!-- templates/add_poem.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Poem</title>
+</head>
+<body>
+    <h2>Add a New Poem</h2>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    <form method="post">
+        <label>Title:</label><br>
+        <input type="text" name="title"><br>
+        <label>Poem Text:</label><br>
+        <textarea name="text" rows="10" cols="50"></textarea><br><br>
+        <input type="submit" value="Submit Poem">
+    </form>
+    <br>
+    <a href="/">Back to Poems</a>
+</body>
+</html>
