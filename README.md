@@ -1,6 +1,6 @@
 # Project One: Poetry Web App
 
-## 🌐 Overview
+## Overview
 
 **Project One** is a full-stack Flask web application that allows users to register, log in, and post, view, comment on, edit, and delete original poems. The app uses:
 
@@ -9,7 +9,7 @@
 - **DynamoDB** for user authentication and account storage
 - **AWS Services** such as IAM, VPC, and RDS for secure, scalable cloud infrastructure
 
-## 🧠 Features
+## Features
 
 - Create, read, update, and delete poems
 - Add and delete comments per poem
