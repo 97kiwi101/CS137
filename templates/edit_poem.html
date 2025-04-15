@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Poem</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            padding: 20px;
+        }
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: auto;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        input, textarea {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+        }
+        button {
+            padding: 10px 20px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Edit Your Poem</h2>
+    <form action="{{ url_for('edit_poem', poem_id=poem[0]) }}" method="POST">
+        <label>Title</label>
+        <input type="text" name="title" value="{{ poem[1] }}" required>
+
+        <label>Text</label>
+        <textarea name="text" rows="10" required>{{ poem[2] }}</textarea>
+
+        <button type="submit">Save Changes</button>
+        <a href="{{ url_for('index') }}">Cancel</a>
+    </form>
+</body>
+</html>

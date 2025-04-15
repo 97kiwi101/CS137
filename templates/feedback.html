@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Poem Feedback</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f9f9f9;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        a.button {
+            display: inline-block;
+            margin-bottom: 20px;
+            background: #3498db;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+        a.button:hover {
+            background: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Poem Feedback</h1>
+    <a class="button" href="/">Back to Home</a>
+    <table>
+        <thead>
+            <tr>
+                <th>Poem Title</th>
+                <th>Comment</th>
+                <th>Commenter</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for title, comment, commenter in results %}
+            <tr>
+                <td>{{ title }}</td>
+                <td>{{ comment }}</td>
+                <td>{{ commenter }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

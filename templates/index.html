@@ -58,7 +58,16 @@
         .comment-form button {
             padding: 4px 8px;
         }
+        .inline {
+            display: inline;
+        }
     </style>
+    <script>
+        function toggleEditForm(commentId) {
+            const form = document.getElementById(`edit-form-${commentId}`);
+            form.style.display = form.style.display === "none" ? "block" : "none";
+        }
+    </script>
 </head>
 <body>
 
@@ -68,11 +77,14 @@
     {% for poem in poems %}
         {% set poem_id = poem[0] %}
         <div class="poem">
-            <!-- Delete Poem Button (top right) -->
             {% if session['username'] == poem[3] %}
-                <form action="{{ url_for('delete_poem', poem_id=poem_id) }}" method="POST" class="delete-poem">
+                <!-- Delete Poem Button -->
+                <form action="{{ url_for('delete_poem', poem_id=poem_id) }}" method="POST" class="delete-poem inline">
                     <button class="delete-btn-small" type="submit">Delete</button>
                 </form>
+
+                <!-- Edit Poem Button -->
+                <a href="{{ url_for('edit_poem', poem_id=poem_id) }}" class="delete-btn-small delete-poem" style="top: 40px;">Edit</a>
             {% endif %}
 
             <div class="title">{{ poem[1] }}</div>
@@ -85,11 +97,22 @@
                     {% for comment in comments[poem_id] %}
                         <div class="comment">
                             <strong>{{ comment.username }}</strong>: {{ comment.comment }}
+
                             {% if comment.username == session['username'] %}
-    <form action="{{ url_for('delete_comment_by_id', comment_id=comment.id) }}" method="POST" class="inline">
-        <button type="submit" class="delete-btn-small">Delete</button>
-    </form>
-{% endif %}
+                                <!-- Delete Button -->
+                                <form action="{{ url_for('delete_comment_by_id', comment_id=comment.id) }}" method="POST" class="inline">
+                                    <button type="submit" class="delete-btn-small">Delete</button>
+                                </form>
+
+                                <!-- Edit Button -->
+                                <button class="delete-btn-small" onclick="toggleEditForm({{ comment.id }})">Edit</button>
+
+                                <!-- Hidden Edit Form -->
+                                <form id="edit-form-{{ comment.id }}" action="{{ url_for('edit_comment', comment_id=comment.id) }}" method="POST" style="display:none; margin-top:5px;">
+                                    <input type="text" name="new_comment_text" value="{{ comment.comment }}" required>
+                                    <button type="submit" class="delete-btn-small">Save</button>
+                                </form>
+                            {% endif %}
                         </div>
                     {% endfor %}
                 {% else %}
