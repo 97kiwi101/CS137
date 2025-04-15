@@ -8,6 +8,9 @@ app.secret_key = 'supersecretkey'
 
 @app.route('/')
 def index():
+    '''
+    Checks if the user has a username if not its direacted to the login page. Then it will query the database to get strings and infomation that is later displayed
+    '''
     if 'username' not in session:
         return redirect(url_for('login'))
 
@@ -27,14 +30,23 @@ def index():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    '''
+    Calls register_user in auth.py
+    '''
     return register_user()
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    '''
+    Calls authenticate_user() in auth.py
+    '''
     return authenticate_user()
 
 @app.route('/feedback')
 def feedback():
+    '''
+    This is the join query requirment its used for the admin to have an over view of user behavoir
+    '''
     query = """
     SELECT p.Title, c.CommentText, c.CommenterUserName
     FROM Poems p
@@ -48,8 +60,11 @@ def feedback():
 '''
 Comments
 '''
-@app.route('/add_comment/<int:poem_id>', methods=['POST'])
+@app.route('/add_comment/<int:poem_id>', methods=['POST'])#ChatGpt
 def add_comment(poem_id):
+    '''
+    Checks to see if the user is login before making a comment. Then it Will request and add the comment to the database for the index to be updated and seen then
+    '''
     if 'username' not in session:
         return redirect(url_for('login'))
 
@@ -74,8 +89,11 @@ def add_comment(poem_id):
 
     return redirect(url_for('index'))
 
-@app.route('/delete_comment_by_id/<int:comment_id>', methods=['POST'])
+@app.route('/delete_comment_by_id/<int:comment_id>', methods=['POST'])#ChatGpt
 def delete_comment_by_id(comment_id):
+    '''
+    checks if user is in, then makes a query request to remove the users comment form the database. This is streamlined with comment ID
+    '''
     if 'username' not in session:
         return redirect(url_for('login'))
 
@@ -88,8 +106,11 @@ def delete_comment_by_id(comment_id):
         flash("You can only delete your own comments.")
     return redirect(url_for('index'))
 
-@app.route('/edit_comment/<int:comment_id>', methods=['POST'])
+@app.route('/edit_comment/<int:comment_id>', methods=['POST'])#ChatGpt
 def edit_comment(comment_id):
+    '''
+    Checks if the user is login. Then it will make a query request to edit and change the users coment text whiched is steamlined with comment id so the query can be easily located and singled out
+    '''
     if 'username' not in session:
         return redirect(url_for('login'))
 
@@ -113,7 +134,7 @@ def edit_comment(comment_id):
 '''
 Poems
 '''
-@app.route('/add_poem', methods=['GET', 'POST'])
+@app.route('/add_poem', methods=['GET', 'POST'])#ChatGpt
 def add_poem():
     if 'username' not in session:
         return redirect(url_for('login'))
@@ -129,7 +150,7 @@ def add_poem():
         return redirect(url_for('index'))
     return render_template('add_poem.html')
 
-@app.route('/delete_poem/<int:poem_id>', methods=['POST'])
+@app.route('/delete_poem/<int:poem_id>', methods=['POST'])#ChatGpt
 def delete_poem(poem_id):
     if 'username' not in session:
         return redirect(url_for('login'))
@@ -145,7 +166,7 @@ def delete_poem(poem_id):
 
     return redirect(url_for('index'))
 
-@app.route('/edit_poem/<int:poem_id>', methods=['GET', 'POST'])
+@app.route('/edit_poem/<int:poem_id>', methods=['GET', 'POST'])#ChatGpt
 def edit_poem(poem_id):
     if 'username' not in session:
         return redirect(url_for('login'))
@@ -168,7 +189,5 @@ def edit_poem(poem_id):
     return render_template('edit_poem.html', poem=poem[0])
 
 
-
-
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True)#this was changed through the nano on the EC2 so its a public setting

@@ -2,7 +2,10 @@
 from flask import render_template, request, redirect, url_for, flash, session
 from dbCode import user_table
 
-def register_user():
+def register_user():#ChatGpt
+    '''
+    It request an input for the user then it is inputed into the dynamo db. The user is assigned a userid number that is unique and so its easier for users to access the account 
+    '''
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -25,7 +28,10 @@ def register_user():
             flash(f"Error during registration: {e}")
     return render_template('register.html')
 
-def authenticate_user():
+def authenticate_user():#ChatGpt
+    '''
+    gets the name and password of the user then its checked to see if its true or not.
+    '''
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
